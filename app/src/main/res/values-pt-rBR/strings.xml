@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Treinamento Android</string>
+
+    <string name="txt_loading">Carregando</string>
+    <string name="txt_username">Usuário</string>
+    <string name="txt_password">Senha</string>
+</resources>

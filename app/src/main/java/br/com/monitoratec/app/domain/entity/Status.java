@@ -1,5 +1,11 @@
 package br.com.monitoratec.app.domain.entity;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+
+import br.com.monitoratec.app.R;
+
 /**
  * Entidade da API GitHub Status.
  *
@@ -8,7 +14,28 @@ package br.com.monitoratec.app.domain.entity;
  * Created by falvojr on 1/9/17.
  */
 public class Status {
-    public String status;
+    @SerializedName("status")
+    public Type type;
     public String body;
-    public String created_on;
+    public Date created_on;
+
+    public enum Type {
+        @SerializedName("good")
+        GOOD(R.color.materialGreen500),
+        @SerializedName("minor")
+        MINOR(R.color.materialOrange500),
+        @SerializedName("major")
+        MAJOR(R.color.materialRed500),
+        NONE(android.R.color.black);
+
+        private int colorRes;
+
+        Type(int colorRes) {
+            this.colorRes = colorRes;
+        }
+
+        public int getColorRes() {
+            return colorRes;
+        }
+    }
 }
