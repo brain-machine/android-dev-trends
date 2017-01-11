@@ -55,5 +55,12 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="@string/txt_basic_auth" />
+
+    <Button
+        android:id="@+id/btOAuth"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_oauth" />
 </LinearLayout>

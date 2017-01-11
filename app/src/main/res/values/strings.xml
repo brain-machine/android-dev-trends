@@ -1,8 +1,22 @@
 <resources>
     <string name="app_name">Android</string>
 
+    <!-- SharedPreference Keys -->
+    <string name="sp_file">br.com.monitoratec.app.FILE_PREFERENCES</string>
+    <string name="sp_credential_key">CREDENTIAL_KEY</string>
+
+    <!-- OAuth strings -->
+    <string name="oauth_client_id">10be4336e6501c178325</string>
+    <string name="oauth_client_secret">ed7b41c6bd94c4d035df0719672664fcc3b9a02b</string>
+    <string name="oauth_host">brainmachine.io</string>
+    <string name="oauth_schema">http</string>
+
+    <!-- Text strings -->
     <string name="txt_loading">Loading</string>
     <string name="txt_username">Username</string>
     <string name="txt_password">Password</string>
     <string name="txt_required">Required field.</string>
+    <string name="txt_basic_auth">Basic Auth</string>
+    <string name="txt_oauth">OAuth</string>
+    <string name="txt_call">Call</string>
 </resources>

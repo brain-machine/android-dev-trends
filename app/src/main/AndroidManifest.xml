@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.monitoratec.app" >
 
+    <!-- Obrigatório para Intent.ACTION_CALL -->
+    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,6 +16,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <!-- OAuth Intent Filters -->
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="@string/oauth_host" android:scheme="@string/oauth_schema" />
             </intent-filter>
         </activity>
     </application>
