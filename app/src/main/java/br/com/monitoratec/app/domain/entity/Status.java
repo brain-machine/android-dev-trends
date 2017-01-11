@@ -20,13 +20,13 @@ public class Status {
     public Date created_on;
 
     public enum Type {
+        NONE(android.R.color.black),
         @SerializedName("good")
         GOOD(R.color.materialGreen500),
         @SerializedName("minor")
         MINOR(R.color.materialOrange500),
         @SerializedName("major")
-        MAJOR(R.color.materialRed500),
-        NONE(android.R.color.black);
+        MAJOR(R.color.materialRed500);
 
         private int colorRes;
 

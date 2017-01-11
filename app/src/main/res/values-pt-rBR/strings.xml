@@ -5,4 +5,5 @@
     <string name="txt_loading">Carregando</string>
     <string name="txt_username">Usuário</string>
     <string name="txt_password">Senha</string>
+    <string name="txt_required">Campo obrigatório.</string>
 </resources>

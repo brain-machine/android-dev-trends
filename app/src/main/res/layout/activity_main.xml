@@ -49,4 +49,11 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btBasicAuth"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 </LinearLayout>

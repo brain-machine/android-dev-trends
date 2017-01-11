@@ -4,4 +4,5 @@
     <string name="txt_loading">Loading</string>
     <string name="txt_username">Username</string>
     <string name="txt_password">Password</string>
+    <string name="txt_required">Required field.</string>
 </resources>
