@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding.widget.RxTextView;
+
 import br.com.monitoratec.app.domain.GitHubApi;
 import br.com.monitoratec.app.domain.GitHubOAuthApi;
 import br.com.monitoratec.app.domain.GitHubStatusApi;
@@ -28,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Credentials;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -72,6 +75,21 @@ public class MainActivity extends AppCompatActivity {
         mGitHubOAuthApi = GitHubOAuthApi.RETROFIT.create(GitHubOAuthApi.class);
 
         mSharedPrefs = getSharedPreferences(getString(R.string.sp_file), MODE_PRIVATE);
+
+        this.bindUsingRx();
+    }
+
+    private void bindUsingRx() {
+        Subscription subscribe = RxTextView.textChanges(mLayoutTxtUsername.getEditText())
+                .skip(1)
+                .subscribe(text -> {
+                    AppUtils.validateRequiredFields(this, mLayoutTxtUsername);
+                });
+        RxTextView.textChanges(mLayoutTxtPassword.getEditText())
+                .skip(1)
+                .subscribe(text -> {
+                    AppUtils.validateRequiredFields(this, mLayoutTxtPassword);
+                });
     }
 
     @OnClick(R.id.btBasicAuth)
@@ -145,19 +163,19 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         changeGitHubStatusColors(Status.Type.NONE);
         mGitHubStatusApi.lastMessage()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new MySubscriber<Status>() {
-                @Override
-                public void onError(String message) {
-                    changeGitHubStatusColors(Status.Type.MAJOR);
-                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MySubscriber<Status>() {
+                    @Override
+                    public void onError(String message) {
+                        changeGitHubStatusColors(Status.Type.MAJOR);
+                    }
 
-                @Override
-                public void onNext(Status status) {
-                    changeGitHubStatusColors(status.type);
-                }
-            });
+                    @Override
+                    public void onNext(Status status) {
+                        changeGitHubStatusColors(status.type);
+                    }
+                });
         processOAuthRedirectUri();
     }
 

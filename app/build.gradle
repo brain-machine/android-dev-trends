@@ -31,6 +31,7 @@ android {
 ext {
     supportLibVersion = '25.1.0'
     retrofitLibVersion = '2.1.0'
+    butterknifeLibVersion = '8.4.0'
 }
 
 dependencies {
@@ -51,6 +52,9 @@ dependencies {
 
     compile "com.android.support:design:${supportLibVersion}"
 
-    compile 'com.jakewharton:butterknife:8.4.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile "com.jakewharton:butterknife:${butterknifeLibVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeLibVersion}"
+
+    // RxBinding (by Jake Wharton)
+    compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
 }
