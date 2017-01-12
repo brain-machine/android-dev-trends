@@ -43,6 +43,11 @@ dependencies {
 
     compile "com.squareup.retrofit2:retrofit:${retrofitLibVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitLibVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofitLibVersion}"
+
+    // RxJava (by ReactiveX)
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
 
     compile "com.android.support:design:${supportLibVersion}"
 

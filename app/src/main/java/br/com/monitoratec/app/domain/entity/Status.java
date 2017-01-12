@@ -20,22 +20,29 @@ public class Status {
     public Date created_on;
 
     public enum Type {
-        NONE(android.R.color.black),
+        NONE(android.R.color.black, R.string.txt_loading),
         @SerializedName("good")
-        GOOD(R.color.materialGreen500),
+        GOOD(R.color.materialGreen500, R.string.txt_loading),
         @SerializedName("minor")
-        MINOR(R.color.materialOrange500),
+        MINOR(R.color.materialOrange500, R.string.txt_loading),
         @SerializedName("major")
-        MAJOR(R.color.materialRed500);
+        MAJOR(R.color.materialRed500, R.string.txt_loading);
 
         private int colorRes;
+        private int messageRes;
 
-        Type(int colorRes) {
+        Type(int colorRes, int messageRes) {
             this.colorRes = colorRes;
+            this.messageRes = messageRes;
         }
 
         public int getColorRes() {
             return colorRes;
         }
+
+        public int getMessageRes() {
+            return messageRes;
+        }
+
     }
 }

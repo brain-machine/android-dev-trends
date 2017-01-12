@@ -33,6 +33,9 @@ import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -161,35 +164,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        changeGitHubStatusColors(Status.Type.NONE.getColorRes(), getString(R.string.txt_loading));
-        Call<Status> call = mGitHubStatusApi.lastMessage();
-        call.enqueue(new Callback<Status>() {
-            @Override
-            public void onResponse(Call<Status> call, Response<Status> response) {
-                if (response.isSuccessful()) {
-                    Status status = response.body();
-                    changeGitHubStatusColors(status.type.getColorRes(), status.body);
-                } else {
-                    try {
-                        String errorBody = response.errorBody().string();
-                        changeGitHubStatusColors(Status.Type.MAJOR.getColorRes(), errorBody);
-                    } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                }
-            }
+        changeGitHubStatusColors(Status.Type.NONE);
+        mGitHubStatusApi.lastMessage()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Subscriber<Status>() {
+                @Override
+                public void onCompleted() { }
 
-            @Override
-            public void onFailure(Call<Status> call, Throwable t) {
-                changeGitHubStatusColors(Status.Type.MAJOR.getColorRes(), t.getMessage());
-            }
-        });
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, e.getMessage(), e);
+                    changeGitHubStatusColors(Status.Type.MAJOR);
+                }
+
+                @Override
+                public void onNext(Status status) {
+                    changeGitHubStatusColors(status.type);
+                }
+            });
         processOAuthRedirectUri();
     }
 
-    private void changeGitHubStatusColors(int colorRes, String message) {
-        mTxtGitHub.setText(message);
-        int color = ContextCompat.getColor(MainActivity.this, colorRes);
+    private void changeGitHubStatusColors(Status.Type statusType) {
+        mTxtGitHub.setText(getString(statusType.getMessageRes()));
+        int color = ContextCompat.getColor(MainActivity.this, statusType.getColorRes());
         mTxtGitHub.setTextColor(color);
         DrawableCompat.setTint(mImgGitHub.getDrawable(), color);
     }
