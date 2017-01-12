@@ -22,11 +22,11 @@ public class Status {
     public enum Type {
         NONE(android.R.color.black, R.string.txt_loading),
         @SerializedName("good")
-        GOOD(R.color.materialGreen500, R.string.txt_loading),
+        GOOD(R.color.materialGreen500, R.string.txt_good),
         @SerializedName("minor")
-        MINOR(R.color.materialOrange500, R.string.txt_loading),
+        MINOR(R.color.materialOrange500, R.string.txt_minor),
         @SerializedName("major")
-        MAJOR(R.color.materialRed500, R.string.txt_loading);
+        MAJOR(R.color.materialRed500, R.string.txt_major);
 
         private int colorRes;
         private int messageRes;

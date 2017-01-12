@@ -19,4 +19,7 @@
     <string name="txt_basic_auth">Basic Auth</string>
     <string name="txt_oauth">OAuth</string>
     <string name="txt_call">Call</string>
+    <string name="txt_good">Status API: Good</string>
+    <string name="txt_minor">Status API: Minor</string>
+    <string name="txt_major">Status API: Major</string>
 </resources>

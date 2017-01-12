@@ -9,15 +9,12 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 import br.com.monitoratec.app.domain.GitHubApi;
 import br.com.monitoratec.app.domain.GitHubOAuthApi;
@@ -26,14 +23,11 @@ import br.com.monitoratec.app.domain.entity.AccessToken;
 import br.com.monitoratec.app.domain.entity.Status;
 import br.com.monitoratec.app.domain.entity.User;
 import br.com.monitoratec.app.util.AppUtils;
+import br.com.monitoratec.app.util.MySubscriber;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Credentials;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -87,31 +81,22 @@ public class MainActivity extends AppCompatActivity {
             String username = mLayoutTxtUsername.getEditText().getText().toString();
             String password = mLayoutTxtPassword.getEditText().getText().toString();
             final String credential = Credentials.basic(username, password);
-            mGitHubApi.basicAuth(credential).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.isSuccessful()) {
-                        String login = response.body().login;
-                        String credentialKey = getString(R.string.sp_credential_key);
-                        mSharedPrefs.edit()
-                                .putString(credentialKey, credential)
-                                .apply();
-                        Snackbar.make(view, login, Snackbar.LENGTH_LONG).show();
-                    } else {
-                        try {
-                            String errorBody = response.errorBody().string();
-                            Snackbar.make(view, errorBody, Snackbar.LENGTH_LONG).show();
-                        } catch (IOException e) {
-                            Log.e(TAG, e.getMessage(), e);
+            mGitHubApi.basicAuth(credential)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new MySubscriber<User>() {
+                        @Override
+                        public void onError(String message) {
+                            Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
                         }
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Snackbar.make(view, t.getMessage(), Snackbar.LENGTH_LONG).show();
-                }
-            });
+                        @Override
+                        public void onNext(User user) {
+                            String credentialKey = getString(R.string.sp_credential_key);
+                            mSharedPrefs.edit().putString(credentialKey, credential).apply();
+                            Snackbar.make(view, user.login, Snackbar.LENGTH_LONG).show();
+                        }
+                    });
         }
     }
 
@@ -128,31 +113,25 @@ public class MainActivity extends AppCompatActivity {
                 //Pegar o access token (Client ID, Client Secret e Code)
                 String clientId = getString(R.string.oauth_client_id);
                 String clientSecret = getString(R.string.oauth_client_secret);
-                mGitHubOAuthApi.accessToken(clientId, clientSecret, code).enqueue(new Callback<AccessToken>() {
-                    @Override
-                    public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
-                        if (response.isSuccessful()) {
-                            AccessToken accessToken = response.body();
-                            String credentialKey = getString(R.string.sp_credential_key);
-                            mSharedPrefs.edit()
-                                    .putString(credentialKey, accessToken.getAuthCredential())
-                                    .apply();
-                            Snackbar.make(mBtnOAuth, accessToken.access_token, Snackbar.LENGTH_LONG).show();
-                        } else {
-                            try {
-                                String errorBody = response.errorBody().string();
-                                Snackbar.make(mBtnOAuth, errorBody, Snackbar.LENGTH_LONG).show();
-                            } catch (IOException e) {
-                                Log.e(TAG, e.getMessage(), e);
-                            }
-                        }
-                    }
+                mGitHubOAuthApi.accessToken(clientId, clientSecret, code)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MySubscriber<AccessToken>() {
 
-                    @Override
-                    public void onFailure(Call<AccessToken> call, Throwable t) {
-                        Snackbar.make(mBtnOAuth, t.getMessage(), Snackbar.LENGTH_LONG).show();
-                    }
-                });
+                            @Override
+                            public void onError(String message) {
+                                Snackbar.make(mBtnOAuth, message, Snackbar.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onNext(AccessToken accessToken) {
+                                String credentialKey = getString(R.string.sp_credential_key);
+                                mSharedPrefs.edit().putString(credentialKey, accessToken.getAuthCredential())
+                                        .apply();
+                                Snackbar.make(mBtnOAuth, accessToken.access_token, Snackbar.LENGTH_LONG).show();
+
+                            }
+                        });
             } else if (uri.getQueryParameter("error") != null) {
                 //TODO Tratar erro
             }
@@ -168,13 +147,9 @@ public class MainActivity extends AppCompatActivity {
         mGitHubStatusApi.lastMessage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<Status>() {
+            .subscribe(new MySubscriber<Status>() {
                 @Override
-                public void onCompleted() { }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.d(TAG, e.getMessage(), e);
+                public void onError(String message) {
                     changeGitHubStatusColors(Status.Type.MAJOR);
                 }
 

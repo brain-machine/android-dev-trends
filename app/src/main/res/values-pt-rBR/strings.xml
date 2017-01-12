@@ -7,4 +7,7 @@
     <string name="txt_password">Senha</string>
     <string name="txt_required">Campo obrigatório.</string>
     <string name="txt_call">Chamar</string>
+    <string name="txt_good">Status API: Bom</string>
+    <string name="txt_minor">Status API: Instável</string>
+    <string name="txt_major">Status API: Indisponível</string>
 </resources>
