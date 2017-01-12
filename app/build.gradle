@@ -32,6 +32,7 @@ ext {
     supportLibVersion = '25.1.0'
     retrofitLibVersion = '2.1.0'
     butterknifeLibVersion = '8.4.0'
+    daggerLibVersion = '2.8'
 }
 
 dependencies {
@@ -40,6 +41,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
     testCompile 'junit:junit:4.12'
 
     compile "com.squareup.retrofit2:retrofit:${retrofitLibVersion}"
@@ -50,11 +52,13 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
 
-    compile "com.android.support:design:${supportLibVersion}"
-
     compile "com.jakewharton:butterknife:${butterknifeLibVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeLibVersion}"
 
     // RxBinding (by Jake Wharton)
     compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+
+    // Dagger 2 (by Google)
+    compile "com.google.dagger:dagger:${daggerLibVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerLibVersion}"
 }
