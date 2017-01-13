@@ -1,4 +1,4 @@
-package br.com.monitoratec.app;
+package br.com.monitoratec.app.presentation.ui.auth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,25 +21,20 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.monitoratec.app.domain.GitHubApi;
-import br.com.monitoratec.app.domain.GitHubOAuthApi;
-import br.com.monitoratec.app.domain.GitHubStatusApi;
-import br.com.monitoratec.app.domain.entity.AccessToken;
+import br.com.monitoratec.app.presentation.base.BaseActivity;
+import br.com.monitoratec.app.R;
 import br.com.monitoratec.app.domain.entity.Status;
 import br.com.monitoratec.app.domain.entity.User;
-import br.com.monitoratec.app.util.AppUtils;
-import br.com.monitoratec.app.util.MySubscriber;
+import br.com.monitoratec.app.infraestructure.storage.service.GitHubOAuthService;
+import br.com.monitoratec.app.presentation.helper.AppHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dagger.Lazy;
 import okhttp3.Credentials;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity {
+public class AuthActivity extends BaseActivity implements AuthContract.View {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = AuthActivity.class.getSimpleName();
 
     @BindView(R.id.ivGitHub) ImageView mImgGitHub;
     @BindView(R.id.tvGitHub) TextView mTxtGitHub;
@@ -47,10 +42,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tilPassword) TextInputLayout mLayoutTxtPassword;
     @BindView(R.id.btOAuth) Button mBtnOAuth;
 
-    @Inject GitHubStatusApi mGitHubStatusApi;
-    @Inject Lazy<GitHubApi> mGitHubApi;
-    @Inject Lazy<GitHubOAuthApi> mGitHubOAuthApi;
     @Inject @Named("secret") SharedPreferences mSharedPrefs;
+    @Inject AppHelper mAppHelper;
+    @Inject AuthContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +52,9 @@ public class MainActivity extends BaseActivity {
         super.setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-        getDaggerDiComponent().inject(this);
+        super.getDaggerUiComponent().inject(this);
+
+        mPresenter.setView(this);
 
         this.bindUsingRx();
     }
@@ -67,15 +63,15 @@ public class MainActivity extends BaseActivity {
         RxTextView.textChanges(mLayoutTxtUsername.getEditText())
                 .skip(1)
                 .subscribe(text -> {
-                    AppUtils.validateRequiredFields(this, mLayoutTxtUsername);
+                    mAppHelper.validateRequiredFields(mLayoutTxtUsername);
                 });
         RxTextView.textChanges(mLayoutTxtPassword.getEditText())
                 .skip(1)
                 .subscribe(text -> {
-                    AppUtils.validateRequiredFields(this, mLayoutTxtPassword);
+                    mAppHelper.validateRequiredFields(mLayoutTxtPassword);
                 });
         RxView.clicks(mBtnOAuth).subscribe(aVoid -> {
-            final String baseUrl = GitHubOAuthApi.BASE_URL + "authorize";
+            final String baseUrl = GitHubOAuthService.BASE_URL + "authorize";
             final String clientId = getString(R.string.oauth_client_id);
             final String redirectUri = getOAuthRedirectUri();
             final Uri uri = Uri.parse(baseUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri);
@@ -86,27 +82,11 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btBasicAuth)
     protected void onBasicAuthClick(Button view) {
-        if (AppUtils.validateRequiredFields(MainActivity.this,
-                mLayoutTxtUsername, mLayoutTxtPassword)) {
+        if (mAppHelper.validateRequiredFields(mLayoutTxtUsername, mLayoutTxtPassword)) {
             String username = mLayoutTxtUsername.getEditText().getText().toString();
             String password = mLayoutTxtPassword.getEditText().getText().toString();
             final String credential = Credentials.basic(username, password);
-            mGitHubApi.get().basicAuth(credential)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new MySubscriber<User>() {
-                        @Override
-                        public void onError(String message) {
-                            Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onNext(User user) {
-                            String credentialKey = getString(R.string.sp_credential_key);
-                            mSharedPrefs.edit().putString(credentialKey, credential).apply();
-                            Snackbar.make(view, user.login, Snackbar.LENGTH_LONG).show();
-                        }
-                    });
+            mPresenter.callGetUser(credential);
         }
     }
 
@@ -123,27 +103,9 @@ public class MainActivity extends BaseActivity {
                 //Pegar o access token (Client ID, Client Secret e Code)
                 String clientId = getString(R.string.oauth_client_id);
                 String clientSecret = getString(R.string.oauth_client_secret);
-                mGitHubOAuthApi.get().accessToken(clientId, clientSecret, code)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new MySubscriber<AccessToken>() {
-
-                            @Override
-                            public void onError(String message) {
-                                Snackbar.make(mBtnOAuth, message, Snackbar.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onNext(AccessToken accessToken) {
-                                String credentialKey = getString(R.string.sp_credential_key);
-                                mSharedPrefs.edit().putString(credentialKey, accessToken.getAuthCredential())
-                                        .apply();
-                                Snackbar.make(mBtnOAuth, accessToken.access_token, Snackbar.LENGTH_LONG).show();
-
-                            }
-                        });
+                mPresenter.callAccessToken(clientId, clientSecret, code);
             } else if (uri.getQueryParameter("error") != null) {
-                //TODO Tratar erro
+                showError(uri.getQueryParameter("error"));
             }
             // Limpar os dados para evitar chamadas múltiplas
             getIntent().setData(null);
@@ -154,26 +116,13 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         changeGitHubStatusColors(Status.Type.NONE);
-        mGitHubStatusApi.lastMessage()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MySubscriber<Status>() {
-                    @Override
-                    public void onError(String message) {
-                        changeGitHubStatusColors(Status.Type.MAJOR);
-                    }
-
-                    @Override
-                    public void onNext(Status status) {
-                        changeGitHubStatusColors(status.type);
-                    }
-                });
+        mPresenter.loadStatus();
         processOAuthRedirectUri();
     }
 
     private void changeGitHubStatusColors(Status.Type statusType) {
         mTxtGitHub.setText(getString(statusType.getMessageRes()));
-        int color = ContextCompat.getColor(MainActivity.this, statusType.getColorRes());
+        int color = ContextCompat.getColor(AuthActivity.this, statusType.getColorRes());
         mTxtGitHub.setTextColor(color);
         DrawableCompat.setTint(mImgGitHub.getDrawable(), color);
     }
@@ -200,5 +149,22 @@ public class MainActivity extends BaseActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    public void onLoadStatusComplete(Status.Type statusType) {
+        changeGitHubStatusColors(statusType);
+    }
+
+    @Override
+    public void onAuthSuccess(String credential, User user) {
+        String credentialKey = getString(R.string.sp_credential_key);
+        mSharedPrefs.edit().putString(credentialKey, credential).apply();
+        Snackbar.make(mImgGitHub, credential, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showError(String message) {
+        Snackbar.make(mImgGitHub, message, Snackbar.LENGTH_LONG).show();
     }
 }

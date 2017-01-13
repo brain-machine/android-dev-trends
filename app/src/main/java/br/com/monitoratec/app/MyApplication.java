@@ -4,6 +4,7 @@ import android.app.Application;
 
 import br.com.monitoratec.app.dagger.DaggerDiComponent;
 import br.com.monitoratec.app.dagger.DiComponent;
+import br.com.monitoratec.app.dagger.UiComponent;
 import br.com.monitoratec.app.dagger.module.ApplicationModule;
 
 /**
@@ -22,7 +23,7 @@ public class MyApplication extends Application {
                 .build();
     }
 
-    public DiComponent getDaggerDiComponent() {
-        return mDiComponent;
+    public UiComponent getDaggerUiComponent() {
+        return mDiComponent.uiComponent();
     }
 }

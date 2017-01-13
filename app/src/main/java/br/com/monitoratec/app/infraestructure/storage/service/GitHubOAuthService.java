@@ -1,4 +1,4 @@
-package br.com.monitoratec.app.domain;
+package br.com.monitoratec.app.infraestructure.storage.service;
 
 import br.com.monitoratec.app.domain.entity.AccessToken;
 import retrofit2.http.Field;
@@ -8,9 +8,11 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 /**
+ * Interface Retrofit da API GitHub OAuth.
+ *
  * Created by falvojr on 1/11/17.
  */
-public interface GitHubOAuthApi {
+public interface GitHubOAuthService {
     String BASE_URL = "https://github.com/login/oauth/";
 
     @Headers({"Accept: application/json"})
