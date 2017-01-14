@@ -19,7 +19,7 @@ public class PresenterModule {
 
     @PerActivity
     @Provides
-    AuthContract.Presenter provideMainPresenter(
+    AuthContract.Presenter providesAuthPresenter(
             GitHubRepository gitHubRepository,
             GitHubStatusRepository gitHubStatusRepository,
             GitHubOAuthRepository gitHubOAuthRepository) {
