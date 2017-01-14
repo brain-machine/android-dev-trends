@@ -6,7 +6,7 @@ Treinamento formulado com o objetivo de apresentar algumas das principais tendê
 2. Retrofit
 3. RxJava/RxAndroid
 4. Dagger 2
-5. Model-View-Presenter (MVP)
-6. Clean Architecture
+5. Clean Architecture
+6. Model-View-Presenter (MVP)
 
-Mais informações sobre a dinâmica das aulas estão disponíveis em nossa [Wiki](https://github.com/brain-machine/android-dev-trends/wiki).
+Mais informações sobre a dinâmica das aulas estão disponíveis na [**WIKI**](https://github.com/brain-machine/android-dev-trends/wiki).
