@@ -11,6 +11,8 @@ import br.com.monitoratec.app.dagger.module.presentation.HelperModule;
 import dagger.Component;
 
 /**
+ * Main Dagger {@link Component}.
+ *
  * Created by falvojr on 1/12/17.
  */
 @Singleton

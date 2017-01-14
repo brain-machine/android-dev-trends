@@ -44,6 +44,7 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
     testCompile 'junit:junit:4.12'
 
+    // Retrofit (by ReactiveX)
     compile "com.squareup.retrofit2:retrofit:${retrofitLibVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitLibVersion}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofitLibVersion}"
@@ -52,6 +53,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
 
+    // Butter Knife (by Jake Wharton)
     compile "com.jakewharton:butterknife:${butterknifeLibVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeLibVersion}"
 

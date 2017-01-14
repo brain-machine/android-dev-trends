@@ -8,6 +8,8 @@ import dagger.Provides;
 import dagger.Reusable;
 
 /**
+ * Module for app helpers.
+ *
  * Created by falvojr on 1/13/17.
  */
 @Module

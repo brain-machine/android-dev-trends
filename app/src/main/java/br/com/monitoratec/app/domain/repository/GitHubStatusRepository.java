@@ -10,5 +10,5 @@ import rx.Observable;
  */
 public interface GitHubStatusRepository {
 
-    Observable<Status> lastMessage();
+    Observable<Status> getLastStatus();
 }

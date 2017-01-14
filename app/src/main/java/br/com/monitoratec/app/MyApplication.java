@@ -8,6 +8,8 @@ import br.com.monitoratec.app.dagger.UiComponent;
 import br.com.monitoratec.app.dagger.module.ApplicationModule;
 
 /**
+ * My custom {@link Application}.
+ *
  * Created by falvojr on 1/12/17.
  */
 public class MyApplication extends Application {

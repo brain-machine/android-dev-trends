@@ -4,6 +4,8 @@ import br.com.monitoratec.app.domain.entity.Status;
 import br.com.monitoratec.app.domain.entity.User;
 
 /**
+ * GitHub authentication MVP contract.
+ *
  * Created by falvojr on 1/13/17.
  */
 public interface AuthContract {
@@ -23,6 +25,6 @@ public interface AuthContract {
 
         void callGetUser(String authorization);
 
-        void callAccessToken(String cliId, String cliSecret, String code);
+        void callAccessTokenGettingUser(String cliId, String cliSecret, String code);
     }
 }

@@ -6,6 +6,8 @@ import br.com.monitoratec.app.presentation.ui.auth.AuthActivity;
 import dagger.Subcomponent;
 
 /**
+ * Dagger UI {@link Subcomponent} (per activity scope).
+ *
  * Created by falvojr on 1/13/17.
  */
 @PerActivity

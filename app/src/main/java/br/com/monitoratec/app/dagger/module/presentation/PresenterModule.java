@@ -10,6 +10,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * Module for presenters.
+ *
  * Created by falvojr on 1/13/17.
  */
 @Module

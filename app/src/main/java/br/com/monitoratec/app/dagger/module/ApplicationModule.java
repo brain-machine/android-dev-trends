@@ -2,7 +2,6 @@ package br.com.monitoratec.app.dagger.module;
 
 import android.app.Application;
 import android.content.Context;
-import android.location.LocationManager;
 
 import javax.inject.Singleton;
 
@@ -10,6 +9,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * Module for {@link Application} related instances.
+ *
  * Created by falvojr on 1/12/17.
  */
 @Module
@@ -33,9 +34,4 @@ public class ApplicationModule {
         return app.getBaseContext();
     }
 
-    @Provides
-    @Singleton
-    LocationManager providesLocationManager(Context context) {
-        return (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-    }
 }

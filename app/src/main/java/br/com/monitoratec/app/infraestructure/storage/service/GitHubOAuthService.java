@@ -18,7 +18,7 @@ public interface GitHubOAuthService {
     @Headers({"Accept: application/json"})
     @FormUrlEncoded
     @POST("access_token")
-    Observable<AccessToken> accessToken(
+    Observable<AccessToken> getAccessToken(
             @Field("client_id") String clientId,
             @Field("client_secret") String clientSecret,
             @Field("code") String code);

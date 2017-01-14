@@ -15,5 +15,5 @@ public interface GitHubService {
     String BASE_URL = "https://api.github.com/";
 
     @GET("user")
-    Observable<User> basicAuth(@Header("Authorization") String credential);
+    Observable<User> getUser(@Header("Authorization") String credential);
 }

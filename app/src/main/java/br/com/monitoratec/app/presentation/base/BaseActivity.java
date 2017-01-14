@@ -6,6 +6,8 @@ import br.com.monitoratec.app.MyApplication;
 import br.com.monitoratec.app.dagger.UiComponent;
 
 /**
+ * Base {@link AppCompatActivity}.
+ *
  * Created by falvojr on 1/12/17.
  */
 public abstract class BaseActivity extends AppCompatActivity {

@@ -1,12 +1,15 @@
 package br.com.monitoratec.app.domain.entity;
 
 /**
+ * Access Token entity for GitHub API OAuth.
+ *
+ * @see <a href="https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site">Access Token</a>
+ *
  * Created by falvojr on 1/11/17.
  */
-
 public class AccessToken {
-    public String access_token;
-    public String token_type;
+    private String access_token;
+    private String token_type;
 
     public String getAuthCredential() {
         final char firstChar = token_type.charAt(0);

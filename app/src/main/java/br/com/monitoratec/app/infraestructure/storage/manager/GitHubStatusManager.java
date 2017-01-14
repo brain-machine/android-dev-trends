@@ -1,5 +1,7 @@
 package br.com.monitoratec.app.infraestructure.storage.manager;
 
+import javax.inject.Inject;
+
 import br.com.monitoratec.app.domain.entity.Status;
 import br.com.monitoratec.app.domain.repository.GitHubStatusRepository;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubStatusService;
@@ -16,13 +18,14 @@ public class GitHubStatusManager implements GitHubStatusRepository {
 
     private final GitHubStatusService mGitHubStatusService;
 
+    @Inject
     public GitHubStatusManager(GitHubStatusService gitHubStatusService) {
         mGitHubStatusService = gitHubStatusService;
     }
 
     @Override
-    public Observable<Status> lastMessage() {
-        return mGitHubStatusService.lastMessage()
+    public Observable<Status> getLastStatus() {
+        return mGitHubStatusService.getLastStatus()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

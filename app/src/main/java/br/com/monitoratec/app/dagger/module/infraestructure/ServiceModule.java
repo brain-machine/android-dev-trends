@@ -15,6 +15,8 @@ import static br.com.monitoratec.app.dagger.module.infraestructure.NetworkModule
 import static br.com.monitoratec.app.dagger.module.infraestructure.NetworkModule.RETROFIT_GITHUB_STATUS;
 
 /**
+ * Module for services (Retrofit interfaces).
+ *
  * Created by falvojr on 1/12/17.
  */
 @Module

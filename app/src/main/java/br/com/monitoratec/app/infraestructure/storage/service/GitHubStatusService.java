@@ -14,5 +14,5 @@ public interface GitHubStatusService {
     String BASE_URL = "https://status.github.com/api/";
 
     @GET("last-message.json")
-    Observable<Status> lastMessage();
+    Observable<Status> getLastStatus();
 }

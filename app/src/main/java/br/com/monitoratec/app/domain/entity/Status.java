@@ -7,7 +7,7 @@ import java.util.Date;
 import br.com.monitoratec.app.R;
 
 /**
- * Entidade da API GitHub Status.
+ * Status entity for GitHub Status API.
  *
  * @see <a href="https://status.github.com/api/last-message.json">Last Message</a>
  *
@@ -16,8 +16,10 @@ import br.com.monitoratec.app.R;
 public class Status {
     @SerializedName("status")
     public Type type;
-    public String body;
-    public Date created_on;
+    @SerializedName("body")
+    public String message;
+    @SerializedName("created_on")
+    public Date createdOn;
 
     public enum Type {
         NONE(android.R.color.black, R.string.txt_loading),
@@ -43,6 +45,5 @@ public class Status {
         public int getMessageRes() {
             return messageRes;
         }
-
     }
 }
