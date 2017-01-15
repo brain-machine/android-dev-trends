@@ -1,7 +1,6 @@
 package br.com.monitoratec.app.presentation.ui.auth;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -12,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,13 +26,14 @@ import br.com.monitoratec.app.domain.entity.User;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubOAuthService;
 import br.com.monitoratec.app.presentation.base.BaseActivity;
 import br.com.monitoratec.app.presentation.helper.AppHelper;
+import br.com.monitoratec.app.presentation.ui.repos.ReposActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Credentials;
 
 /**
- * GitHub authentication activity.
+ * GitHub authentication activity (view).
  *
  * Created by falvojr on 1/13/17.
  */
@@ -46,7 +47,6 @@ public class AuthActivity extends BaseActivity implements AuthContract.View {
     @BindView(R.id.tilPassword) TextInputLayout mLayoutTxtPassword;
     @BindView(R.id.btOAuth) Button mBtnOAuth;
 
-    @Inject SharedPreferences mSharedPrefs;
     @Inject AppHelper mAppHelper;
     @Inject AuthContract.Presenter mPresenter;
 
@@ -57,78 +57,20 @@ public class AuthActivity extends BaseActivity implements AuthContract.View {
 
         ButterKnife.bind(this);
         super.getDaggerUiComponent().inject(this);
-
         mPresenter.setView(this);
 
         this.bindUsingRx();
     }
 
-    private void bindUsingRx() {
-        RxTextView.textChanges(mLayoutTxtUsername.getEditText())
-                .skip(1)
-                .subscribe(text -> {
-                    mAppHelper.validateRequiredFields(mLayoutTxtUsername);
-                });
-        RxTextView.textChanges(mLayoutTxtPassword.getEditText())
-                .skip(1)
-                .subscribe(text -> {
-                    mAppHelper.validateRequiredFields(mLayoutTxtPassword);
-                });
-        RxView.clicks(mBtnOAuth).subscribe(aVoid -> {
-            final String baseUrl = GitHubOAuthService.BASE_URL + "authorize";
-            final String clientId = getString(R.string.oauth_client_id);
-            final String redirectUri = getOAuthRedirectUri();
-            final Uri uri = Uri.parse(baseUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        });
-    }
-
-    @OnClick(R.id.btBasicAuth)
-    protected void onBasicAuthClick(Button view) {
-        if (mAppHelper.validateRequiredFields(mLayoutTxtUsername, mLayoutTxtPassword)) {
-            String username = mLayoutTxtUsername.getEditText().getText().toString();
-            String password = mLayoutTxtPassword.getEditText().getText().toString();
-            final String credential = Credentials.basic(username, password);
-            mPresenter.callGetUser(credential);
-        }
-    }
-
-    private String getOAuthRedirectUri() {
-        return getString(R.string.oauth_schema) + "://" + getString(R.string.oauth_host);
-    }
-
-    private void processOAuthRedirectUri() {
-        // Os intent-filter's permitem a interação com o ACTION_VIEW
-        final Uri uri = getIntent().getData();
-        if (uri != null && uri.toString().startsWith(this.getOAuthRedirectUri())) {
-            String code = uri.getQueryParameter("code");
-            if (code != null) {
-                //Pegar o access token (Client ID, Client Secret e Code)
-                String clientId = getString(R.string.oauth_client_id);
-                String clientSecret = getString(R.string.oauth_client_secret);
-                mPresenter.callAccessTokenGettingUser(clientId, clientSecret, code);
-            } else if (uri.getQueryParameter("error") != null) {
-                showError(uri.getQueryParameter("error"));
-            }
-            // Limpar os dados para evitar chamadas múltiplas
-            getIntent().setData(null);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        changeGitHubStatusColors(Status.Type.NONE);
-        mPresenter.loadStatus();
-        processOAuthRedirectUri();
-    }
-
-    private void changeGitHubStatusColors(Status.Type statusType) {
-        mTxtGitHub.setText(getString(statusType.getMessageRes()));
-        int color = ContextCompat.getColor(AuthActivity.this, statusType.getColorRes());
-        mTxtGitHub.setTextColor(color);
-        DrawableCompat.setTint(mImgGitHub.getDrawable(), color);
+        // Restore default GitHub fields status
+        this.onGetStatusComplete(Status.Type.NONE);
+        // Get last status from GitHub Status API
+        mPresenter.getStatus();
+        // Process (if necessary) OAUth redirect callback
+        this.processOAuthRedirectUri();
     }
 
     @Override
@@ -142,33 +84,92 @@ public class AuthActivity extends BaseActivity implements AuthContract.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionCall:
-                final String maikoNormalNumber = "+55 16 99387-0941";
-                final Uri uri = Uri.fromParts("tel", maikoNormalNumber, null);
+                final String normalNumber = "+55 16 99387-0941";
+                final Uri uri = Uri.fromParts("tel", normalNumber, null);
                 final Intent intent = new Intent(Intent.ACTION_DIAL, uri);
                 startActivity(intent);
                 return true;
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
     @Override
-    public void onLoadStatusComplete(Status.Type statusType) {
-        changeGitHubStatusColors(statusType);
+    public void onGetStatusComplete(Status.Type statusType) {
+        int color = ContextCompat.getColor(AuthActivity.this, statusType.getColorRes());
+        mTxtGitHub.setText(getString(statusType.getMessageRes()));
+        mTxtGitHub.setTextColor(color);
+        DrawableCompat.setTint(mImgGitHub.getDrawable(), color);
     }
 
     @Override
-    public void onAuthSuccess(String credential, User user) {
-        String credentialKey = getString(R.string.sp_credential_key);
-        mSharedPrefs.edit().putString(credentialKey, credential).apply();
-        Snackbar.make(mImgGitHub, credential, Snackbar.LENGTH_LONG).show();
+    public void onGetUserComplete(String credential, User user) {
+        Intent intent = new Intent(this, ReposActivity.class);
+        intent.putExtra(ReposActivity.EXTRA_CREDENTIAL, credential);
+        intent.putExtra(ReposActivity.EXTRA_USER, user);
+        startActivity(intent);
     }
 
     @Override
     public void showError(String message) {
         Snackbar.make(mImgGitHub, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.btBasicAuth)
+    void onBasicAuthClick(Button view) {
+        if (mAppHelper.validateRequiredFields(mLayoutTxtUsername, mLayoutTxtPassword)) {
+            String username = mLayoutTxtUsername.getEditText().getText().toString();
+            String password = mLayoutTxtPassword.getEditText().getText().toString();
+            final String credential = Credentials.basic(username, password);
+            mPresenter.getUser(credential);
+        }
+    }
+
+    private void bindUsingRx() {
+        final EditText editTextUsername = mLayoutTxtUsername.getEditText();
+        final EditText editTextPassword = mLayoutTxtPassword.getEditText();
+        if (editTextUsername != null && editTextPassword != null) {
+            RxTextView.textChanges(editTextUsername)
+                    .skip(1)
+                    .subscribe(text -> {
+                        mAppHelper.validateRequiredFields(mLayoutTxtUsername);
+                    });
+            RxTextView.textChanges(editTextPassword)
+                    .skip(1)
+                    .subscribe(text -> {
+                        mAppHelper.validateRequiredFields(mLayoutTxtPassword);
+                    });
+        }
+        RxView.clicks(mBtnOAuth).subscribe(aVoid -> {
+            final String baseUrl = GitHubOAuthService.BASE_URL + "authorize";
+            final String clientId = getString(R.string.oauth_client_id);
+            final String redirectUri = getOAuthRedirectUri();
+            final Uri uri = Uri.parse(baseUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        });
+    }
+
+    private String getOAuthRedirectUri() {
+        return getString(R.string.oauth_schema) + "://" + getString(R.string.oauth_host);
+    }
+
+    private void processOAuthRedirectUri() {
+        // the intent filter defined in AndroidManifest will handle the return from ACTION_VIEW intent
+        final Uri uri = getIntent().getData();
+        if (uri != null && uri.toString().startsWith(this.getOAuthRedirectUri())) {
+            // use the parameter your API exposes for the code (mostly it's "code")
+            String code = uri.getQueryParameter("code");
+            if (code != null) {
+                // get access token and related User
+                String clientId = getString(R.string.oauth_client_id);
+                String clientSecret = getString(R.string.oauth_client_secret);
+                mPresenter.getAccessTokenAndUser(clientId, clientSecret, code);
+            } else if (uri.getQueryParameter("error") != null) {
+                showError(uri.getQueryParameter("error"));
+            }
+            // Clear Intent Data preventing multiple calls
+            getIntent().setData(null);
+        }
     }
 }

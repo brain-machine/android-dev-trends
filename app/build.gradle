@@ -63,4 +63,5 @@ dependencies {
     // Dagger 2 (by Google)
     compile "com.google.dagger:dagger:${daggerLibVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerLibVersion}"
+    compile 'com.android.support:recyclerview-v7:25.1.0'
 }

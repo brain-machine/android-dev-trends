@@ -30,7 +30,7 @@ public final class AppHelper {
                 if (TextUtils.isEmpty(editText.getText())) {
                     isValid = false;
                     field.setErrorEnabled(true);
-                    field.setError(mContext.getString(R.string.txt_required));
+                    field.setError(mContext.getString(R.string.msg_required_field));
                 } else {
                     field.setErrorEnabled(false);
                     field.setError(null);

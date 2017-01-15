@@ -1,4 +1,5 @@
 <resources>
+    <!-- App name -->
     <string name="app_name">Android</string>
 
     <!-- SharedPreference Keys -->
@@ -11,15 +12,21 @@
     <string name="oauth_host">brainmachine.io</string>
     <string name="oauth_schema">http</string>
 
-    <!-- Text strings -->
+    <!-- Titles -->
+    <string name="title_activity_repos">Repositories</string>
+
+    <!-- Label strings -->
     <string name="txt_loading">Loading</string>
     <string name="txt_username">Username</string>
     <string name="txt_password">Password</string>
-    <string name="txt_required">Required field.</string>
     <string name="txt_basic_auth">Basic Auth</string>
     <string name="txt_oauth">OAuth</string>
     <string name="txt_call">Call</string>
     <string name="txt_good">Status API: Good</string>
     <string name="txt_minor">Status API: Minor</string>
     <string name="txt_major">Status API: Major</string>
+
+    <!-- Messages strings -->
+    <string name="msg_required_field">Required field.</string>
+    <string name="msg_credential_not_found">Credential not found.</string>
 </resources>

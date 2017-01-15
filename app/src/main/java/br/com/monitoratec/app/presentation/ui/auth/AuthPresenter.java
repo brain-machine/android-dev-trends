@@ -34,32 +34,32 @@ public class AuthPresenter implements AuthContract.Presenter {
     }
 
     @Override
-    public void loadStatus() {
+    public void getStatus() {
         mGitHubStatusRepository.getLastStatus()
                 .subscribe(status -> {
-                    mView.onLoadStatusComplete(status.type);
+                    mView.onGetStatusComplete(status.type);
                 }, error -> {
-                    mView.onLoadStatusComplete(Status.Type.MAJOR);
+                    mView.onGetStatusComplete(Status.Type.MAJOR);
                 });
     }
 
     @Override
-    public void callGetUser(String authorization) {
+    public void getUser(String authorization) {
         mGitHubRepository.getUser(authorization)
                 .subscribe(user -> {
-                    mView.onAuthSuccess(authorization, user);
+                    mView.onGetUserComplete(authorization, user);
                 }, error -> {
                     mView.showError(error.getMessage());
                 });
     }
 
     @Override
-    public void callAccessTokenGettingUser(String clientId,
-                                           String clientSecret,
-                                           String code) {
+    public void getAccessTokenAndUser(String clientId,
+                                      String clientSecret,
+                                      String code) {
         mGitHubOAuthRepository.getAccessToken(clientId, clientSecret, code)
                 .subscribe(entity -> {
-                    callGetUser(entity.getAuthCredential());
+                    getUser(entity.getAuthCredential());
                 }, error -> {
                     mView.showError(error.getMessage());
                 });

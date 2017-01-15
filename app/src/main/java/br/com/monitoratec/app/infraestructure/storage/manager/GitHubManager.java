@@ -1,7 +1,10 @@
 package br.com.monitoratec.app.infraestructure.storage.manager;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import br.com.monitoratec.app.domain.entity.Repo;
 import br.com.monitoratec.app.domain.entity.User;
 import br.com.monitoratec.app.domain.repository.GitHubRepository;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubService;
@@ -26,6 +29,13 @@ public class GitHubManager implements GitHubRepository {
     @Override
     public Observable<User> getUser(String authorization) {
         return mGitHubService.getUser(authorization)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Repo>> getRepos(String credential) {
+        return mGitHubService.getRepos(credential)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App name -->
     <string name="app_name">Treinamento Android</string>
 
+    <!-- Titles -->
+    <string name="title_activity_repos">Repositórios</string>
+
+    <!-- Labels -->
     <string name="txt_loading">Carregando</string>
     <string name="txt_username">Usuário</string>
     <string name="txt_password">Senha</string>
-    <string name="txt_required">Campo obrigatório.</string>
     <string name="txt_call">Chamar</string>
     <string name="txt_good">Status API: Bom</string>
     <string name="txt_minor">Status API: Instável</string>
     <string name="txt_major">Status API: Indisponível</string>
+
+    <!-- Messages -->
+    <string name="msg_required_field">Campo obrigatório.</string>
+    <string name="msg_credential_not_found">Credencial não encontrada.</string>
 </resources>
