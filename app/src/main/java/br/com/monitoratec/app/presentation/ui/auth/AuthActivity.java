@@ -21,8 +21,8 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import javax.inject.Inject;
 
 import br.com.monitoratec.app.R;
-import br.com.monitoratec.app.domain.entity.Status;
-import br.com.monitoratec.app.domain.entity.User;
+import br.com.monitoratec.app.model.entity.Status;
+import br.com.monitoratec.app.model.entity.User;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubOAuthService;
 import br.com.monitoratec.app.presentation.base.BaseActivity;
 import br.com.monitoratec.app.presentation.helper.AppHelper;
@@ -39,6 +39,9 @@ import okhttp3.Credentials;
  */
 public class AuthActivity extends BaseActivity implements AuthContract.View {
 
+    //TODO (23): Reforcar os conceitos, RxBinding, @OnClick e Auth!
+    //Importante: Rodar em debug.
+
     @BindView(R.id.ivGitHub) ImageView mImgGitHub;
     @BindView(R.id.tvGitHub) TextView mTxtGitHub;
     @BindView(R.id.tilUsername) TextInputLayout mLayoutTxtUsername;
@@ -54,74 +57,12 @@ public class AuthActivity extends BaseActivity implements AuthContract.View {
         super.setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-        super.getDaggerUiComponent().inject(this);
+        super.getDaggerActivitySubcomponent().inject(this);
         mPresenter.setView(this);
 
         this.bindUsingRx();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Restore default GitHub fields status
-        this.onGetStatusComplete(Status.Type.NONE);
-        // Get last status from GitHub Status API
-        mPresenter.getStatus();
-        // Process (if necessary) OAUth redirect callback
-        this.processOAuthRedirectUri();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.actionCall:
-                final String normalNumber = "+55 16 99387-0941";
-                final Uri uri = Uri.fromParts("tel", normalNumber, null);
-                final Intent intent = new Intent(Intent.ACTION_DIAL, uri);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onGetStatusComplete(Status.Type statusType) {
-        int color = ContextCompat.getColor(AuthActivity.this, statusType.getColorRes());
-        mTxtGitHub.setText(getString(statusType.getMessageRes()));
-        mTxtGitHub.setTextColor(color);
-        DrawableCompat.setTint(mImgGitHub.getDrawable(), color);
-    }
-
-    @Override
-    public void onGetUserComplete(String credential, User user) {
-        Intent intent = new Intent(this, ReposActivity.class);
-        intent.putExtra(ReposActivity.EXTRA_CREDENTIAL, credential);
-        intent.putExtra(ReposActivity.EXTRA_USER, user);
-        startActivity(intent);
-    }
-
-    @Override
-    public void showError(String message) {
-        Snackbar.make(mImgGitHub, message, Snackbar.LENGTH_LONG).show();
-    }
-
-    @OnClick(R.id.btBasicAuth)
-    void onBasicAuthClick(Button view) {
-        if (mAppHelper.validateRequiredFields(mLayoutTxtUsername, mLayoutTxtPassword)) {
-            String username = mLayoutTxtUsername.getEditText().getText().toString();
-            String password = mLayoutTxtPassword.getEditText().getText().toString();
-            final String credential = Credentials.basic(username, password);
-            mPresenter.getUser(credential);
-        }
-    }
 
     private void bindUsingRx() {
         final EditText editTextUsername = mLayoutTxtUsername.getEditText();
@@ -148,6 +89,49 @@ public class AuthActivity extends BaseActivity implements AuthContract.View {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Restore default GitHub fields status
+        this.onGetStatusComplete(Status.Type.NONE);
+        // Get last status from GitHub Status API
+        mPresenter.getStatus();
+        // Process (if necessary) OAUth redirect callback
+        this.processOAuthRedirectUri();
+    }
+
+    @Override
+    public void onGetStatusComplete(Status.Type statusType) {
+        int color = ContextCompat.getColor(AuthActivity.this, statusType.getColorRes());
+        mTxtGitHub.setText(getString(statusType.getMessageRes()));
+        mTxtGitHub.setTextColor(color);
+        //TODO (24): Vector drawable!
+        DrawableCompat.setTint(mImgGitHub.getDrawable(), color);
+    }
+
+    @Override
+    public void showError(String message) {
+        Snackbar.make(mImgGitHub, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.btBasicAuth)
+    void onBasicAuthClick(Button view) {
+        if (mAppHelper.validateRequiredFields(mLayoutTxtUsername, mLayoutTxtPassword)) {
+            String username = mLayoutTxtUsername.getEditText().getText().toString();
+            String password = mLayoutTxtPassword.getEditText().getText().toString();
+            final String credential = Credentials.basic(username, password);
+            mPresenter.getUser(credential);
+        }
+    }
+
+    @Override
+    public void onGetUserComplete(String credential, User user) {
+        Intent intent = new Intent(this, ReposActivity.class);
+        intent.putExtra(ReposActivity.EXTRA_CREDENTIAL, credential);
+        intent.putExtra(ReposActivity.EXTRA_USER, user);
+        startActivity(intent);
+    }
+
     private String getOAuthRedirectUri() {
         return getString(R.string.oauth_schema) + "://" + getString(R.string.oauth_host);
     }
@@ -168,6 +152,27 @@ public class AuthActivity extends BaseActivity implements AuthContract.View {
             }
             // Clear Intent Data preventing multiple calls
             getIntent().setData(null);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionCall:
+                final String normalNumber = "+55 16 99387-0941";
+                final Uri uri = Uri.fromParts("tel", normalNumber, null);
+                final Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -22,21 +22,26 @@ import static br.com.monitoratec.app.dagger.module.infraestructure.NetworkModule
 @Module
 public class ServiceModule {
 
+    //TODO (08) Dagger: Modulo que cria os servicos (a partir de suas interfaces)
+
     @Singleton
     @Provides
-    GitHubService providesGitHub(@Named(RETROFIT_GITHUB) Retrofit retrofit) {
+    GitHubService providesGitHub(
+            @Named(RETROFIT_GITHUB) Retrofit retrofit) {
         return retrofit.create(GitHubService.class);
     }
 
     @Singleton
     @Provides
-    GitHubStatusService providesGitHubStatus(@Named(RETROFIT_GITHUB_STATUS) Retrofit retrofit) {
+    GitHubStatusService providesGitHubStatus(
+            @Named(RETROFIT_GITHUB_STATUS) Retrofit retrofit) {
         return retrofit.create(GitHubStatusService.class);
     }
 
     @Singleton
     @Provides
-    GitHubOAuthService providesGitHubOAuth(@Named(RETROFIT_GITHUB_OAUTH) Retrofit retrofit) {
+    GitHubOAuthService providesGitHubOAuth(
+            @Named(RETROFIT_GITHUB_OAUTH) Retrofit retrofit) {
         return retrofit.create(GitHubOAuthService.class);
     }
 

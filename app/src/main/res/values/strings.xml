@@ -1,6 +1,6 @@
 <resources>
     <!-- App name -->
-    <string name="app_name">Android Coach</string>
+    <string name="app_name">SC2017</string>
 
     <!-- SharedPreference Keys -->
     <string name="sp_file">br.com.monitoratec.app.FILE_PREFERENCES</string>
@@ -25,6 +25,7 @@
     <string name="txt_good">Status API: Good</string>
     <string name="txt_minor">Status API: Minor</string>
     <string name="txt_major">Status API: Major</string>
+    <string name="txt_or">OR</string>
 
     <!-- Messages strings -->
     <string name="msg_required_field">Required field.</string>

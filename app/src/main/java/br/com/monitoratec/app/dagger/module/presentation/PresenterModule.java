@@ -1,9 +1,9 @@
 package br.com.monitoratec.app.dagger.module.presentation;
 
 import br.com.monitoratec.app.dagger.scope.PerActivity;
-import br.com.monitoratec.app.domain.repository.GitHubOAuthRepository;
-import br.com.monitoratec.app.domain.repository.GitHubRepository;
-import br.com.monitoratec.app.domain.repository.GitHubStatusRepository;
+import br.com.monitoratec.app.model.repository.GitHubOAuthRepository;
+import br.com.monitoratec.app.model.repository.GitHubRepository;
+import br.com.monitoratec.app.model.repository.GitHubStatusRepository;
 import br.com.monitoratec.app.presentation.ui.auth.AuthContract;
 import br.com.monitoratec.app.presentation.ui.auth.AuthPresenter;
 import br.com.monitoratec.app.presentation.ui.repos.ReposContract;
@@ -19,6 +19,9 @@ import dagger.Provides;
 @Module
 public class PresenterModule {
 
+    //TODO (14) Dagger: Prove os Presenter's (MVP)
+    //Importante: @PerActivity (escopo)
+
     @PerActivity
     @Provides
     AuthContract.Presenter providesAuthPresenter(
@@ -32,7 +35,8 @@ public class PresenterModule {
 
     @PerActivity
     @Provides
-    ReposContract.Presenter providesResposPresenter(GitHubRepository gitHubRepository) {
+    ReposContract.Presenter providesResposPresenter(
+            GitHubRepository gitHubRepository) {
         return new ReposPresenter(gitHubRepository);
     }
 }

@@ -12,8 +12,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.monitoratec.app.R;
-import br.com.monitoratec.app.domain.entity.Repo;
-import br.com.monitoratec.app.domain.entity.User;
+import br.com.monitoratec.app.model.entity.Repo;
+import br.com.monitoratec.app.model.entity.User;
 import br.com.monitoratec.app.presentation.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +24,8 @@ import butterknife.ButterKnife;
  * Created by falvojr on 1/14/17.
  */
 public class ReposActivity extends BaseActivity implements ReposContract.View {
+
+    //TODO (18) MVP: No MVP Activities ou Fragmentos representar um View
 
     public static final String EXTRA_CREDENTIAL = "Intent.Extra.Credential";
     public static final String EXTRA_USER = "Intent.Extra.User";
@@ -39,16 +41,28 @@ public class ReposActivity extends BaseActivity implements ReposContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repos);
 
+        //TODO (19) Butter Knife: Bind de campos annotados (Activity e Adapter)
         ButterKnife.bind(this);
-        super.getDaggerUiComponent().inject(this);
+        //TODO (21) Dagger: Injeta os componentes annotados (grafo)
+        super.getDaggerActivitySubcomponent().inject(this);
+
         mPresenter.setView(this);
 
         setSupportActionBar(mToolbar);
-        mFab.setOnClickListener(view -> this.startNewRepoActivity());
+        // Add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        mFab.setOnClickListener(view -> {
+            Snackbar.make(view, "TODO 'POST /user/repo'", Snackbar.LENGTH_LONG).show();
+        });
 
         final String credential = getIntent().getStringExtra(EXTRA_CREDENTIAL);
         final User unusedUser = getIntent().getParcelableExtra(EXTRA_USER);
         if(credential != null && unusedUser != null) {
+            //TODO (22): Chama o presenter injetado!
             mPresenter.loadRepos(credential);
         } else {
             this.showError(getString(R.string.msg_credential_not_found));
@@ -63,11 +77,6 @@ public class ReposActivity extends BaseActivity implements ReposContract.View {
         // specify an adapter (see also next example)
         ReposAdapter adapter = new ReposAdapter(repos);
         mRecyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void startNewRepoActivity() {
-        Snackbar.make(mFab, "TODO 'POST /user/repo'", Snackbar.LENGTH_LONG).show();
     }
 
     @Override

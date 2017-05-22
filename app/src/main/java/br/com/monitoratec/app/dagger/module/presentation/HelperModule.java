@@ -14,6 +14,9 @@ import dagger.Reusable;
  */
 @Module
 public class HelperModule {
+
+    //TODO (12) Dagger: Disponibiliza um helper que depende de Context ;)
+
     @Provides
     @Reusable
     AppHelper provideTextHelper(Context context) {

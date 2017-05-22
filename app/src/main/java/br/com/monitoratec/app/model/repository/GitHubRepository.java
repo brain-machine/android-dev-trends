@@ -1,9 +1,9 @@
-package br.com.monitoratec.app.domain.repository;
+package br.com.monitoratec.app.model.repository;
 
 import java.util.List;
 
-import br.com.monitoratec.app.domain.entity.Repo;
-import br.com.monitoratec.app.domain.entity.User;
+import br.com.monitoratec.app.model.entity.Repo;
+import br.com.monitoratec.app.model.entity.User;
 import io.reactivex.Observable;
 
 /**

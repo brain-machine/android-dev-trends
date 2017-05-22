@@ -1,3 +1,5 @@
+//TODO (01) Geral: Arquivos build.gradle (top e app level)
+
 apply plugin: 'com.android.application'
 
 android {
@@ -26,6 +28,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
+//TODO (02) Geral: Dependencias e suporte a lambda nativo
 
 ext {
     supportVersion = '25.3.1'

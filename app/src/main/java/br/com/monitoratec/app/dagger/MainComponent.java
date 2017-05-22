@@ -3,11 +3,12 @@ package br.com.monitoratec.app.dagger;
 import javax.inject.Singleton;
 
 import br.com.monitoratec.app.dagger.module.ApplicationModule;
-import br.com.monitoratec.app.dagger.module.PreferenceModule;
+import br.com.monitoratec.app.dagger.module.presentation.PreferenceModule;
 import br.com.monitoratec.app.dagger.module.infraestructure.ManagerModule;
 import br.com.monitoratec.app.dagger.module.infraestructure.NetworkModule;
 import br.com.monitoratec.app.dagger.module.infraestructure.ServiceModule;
 import br.com.monitoratec.app.dagger.module.presentation.HelperModule;
+import br.com.monitoratec.app.dagger.subcomponent.ActivitySubcomponent;
 import dagger.Component;
 
 /**
@@ -24,6 +25,10 @@ import dagger.Component;
         ServiceModule.class,
         ManagerModule.class
 })
-public interface DiComponent {
-    UiComponent uiComponent();
+public interface MainComponent {
+
+    //TODO (16) Dagger: Componente principal do Dagger (ver MyApplication)
+    //Importante: @Component
+
+    ActivitySubcomponent activitySubcomponent();
 }

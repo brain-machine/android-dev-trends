@@ -2,9 +2,9 @@ package br.com.monitoratec.app.dagger.module.infraestructure;
 
 import javax.inject.Singleton;
 
-import br.com.monitoratec.app.domain.repository.GitHubOAuthRepository;
-import br.com.monitoratec.app.domain.repository.GitHubRepository;
-import br.com.monitoratec.app.domain.repository.GitHubStatusRepository;
+import br.com.monitoratec.app.model.repository.GitHubOAuthRepository;
+import br.com.monitoratec.app.model.repository.GitHubRepository;
+import br.com.monitoratec.app.model.repository.GitHubStatusRepository;
 import br.com.monitoratec.app.infraestructure.storage.manager.GitHubManager;
 import br.com.monitoratec.app.infraestructure.storage.manager.GitHubOAuthManager;
 import br.com.monitoratec.app.infraestructure.storage.manager.GitHubStatusManager;
@@ -21,6 +21,8 @@ import dagger.Provides;
  */
 @Module
 public class ManagerModule {
+
+    //TODO (10) Dagger: Prove os managers atraves de seus Service's.
 
     @Singleton
     @Provides

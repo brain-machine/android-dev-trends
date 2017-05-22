@@ -1,4 +1,4 @@
-package br.com.monitoratec.app.dagger.module;
+package br.com.monitoratec.app.dagger.module.presentation;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,6 +18,8 @@ import dagger.Provides;
  */
 @Module
 public class PreferenceModule {
+
+    //TODO (13) Dagger: Prove SharedPreferences (tambem dependentes de Context).
 
     @Provides
     @Singleton

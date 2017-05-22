@@ -2,7 +2,7 @@ package br.com.monitoratec.app.presentation.ui.repos;
 
 import java.util.List;
 
-import br.com.monitoratec.app.domain.entity.Repo;
+import br.com.monitoratec.app.model.entity.Repo;
 
 /**
  * GitHub list {@link Repo} MVP contract.
@@ -12,8 +12,6 @@ import br.com.monitoratec.app.domain.entity.Repo;
 public interface ReposContract {
     interface View {
         void setupRepos(List<Repo> repos);
-
-        void startNewRepoActivity();
 
         void showError(String message);
     }

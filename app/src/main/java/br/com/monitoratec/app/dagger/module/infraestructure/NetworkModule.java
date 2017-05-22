@@ -23,6 +23,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetworkModule {
 
+    //TODO (07) Dagger: Modulo que configura as instancias do Retrofit (uma para cada API)
+    //Importante: @Provides, @Singleton, @Named e RxJava2CallAdapterFactory
+    //Link Util: https://gist.github.com/falvojr/8ed285296a53052086d9a346018845ce
+
     static final String RETROFIT_GITHUB = "GitHub";
     static final String RETROFIT_GITHUB_STATUS = "GitHubStatus";
     static final String RETROFIT_GITHUB_OAUTH = "GitHubOAuth";
@@ -71,9 +75,7 @@ public class NetworkModule {
         return buildRetrofit(gsonFactory, rxFactory, GitHubOAuthService.BASE_URL);
     }
 
-    private Retrofit buildRetrofit(GsonConverterFactory converterFactory,
-                                   RxJava2CallAdapterFactory callAdapterFactory,
-                                   String baseUrl) {
+    private Retrofit buildRetrofit(GsonConverterFactory converterFactory, RxJava2CallAdapterFactory callAdapterFactory, String baseUrl) {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(converterFactory)

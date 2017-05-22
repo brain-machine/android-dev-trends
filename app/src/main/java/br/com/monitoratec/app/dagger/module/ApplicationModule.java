@@ -16,6 +16,8 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
 
+    //TODO (11) Dagger: Modulo que prove contextos a elementos de visão
+
     private Application mApplication;
 
     public ApplicationModule(Application app) {

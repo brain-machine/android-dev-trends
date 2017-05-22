@@ -1,7 +1,7 @@
 package br.com.monitoratec.app.presentation.ui.auth;
 
-import br.com.monitoratec.app.domain.entity.Status;
-import br.com.monitoratec.app.domain.entity.User;
+import br.com.monitoratec.app.model.entity.Status;
+import br.com.monitoratec.app.model.entity.User;
 
 /**
  * GitHub authentication MVP contract.

@@ -4,13 +4,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import br.com.monitoratec.app.domain.entity.Repo;
-import br.com.monitoratec.app.domain.entity.User;
-import br.com.monitoratec.app.domain.repository.GitHubRepository;
+import br.com.monitoratec.app.model.entity.Repo;
+import br.com.monitoratec.app.model.entity.User;
+import br.com.monitoratec.app.model.repository.GitHubRepository;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubService;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Manager for {@link GitHubRepository}.
@@ -18,6 +16,9 @@ import io.reactivex.schedulers.Schedulers;
  * Created by falvojr on 1/13/17.
  */
 public class GitHubManager implements GitHubRepository {
+
+    //TODO (09) Clean Achitecture: Infraestrutura de storage (HTTP, Local etc)
+    //Importante: Repository (desacoplar a Infraestrutura do Model/Domain)
 
     private final GitHubService mGitHubService;
 
@@ -28,15 +29,11 @@ public class GitHubManager implements GitHubRepository {
 
     @Override
     public Observable<User> getUser(String authorization) {
-        return mGitHubService.getUser(authorization)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return mGitHubService.getUser(authorization);
     }
 
     @Override
     public Observable<List<Repo>> getRepos(String credential) {
-        return mGitHubService.getRepos(credential)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return mGitHubService.getRepos(credential);
     }
 }

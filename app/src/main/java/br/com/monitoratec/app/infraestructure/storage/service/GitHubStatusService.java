@@ -1,6 +1,6 @@
 package br.com.monitoratec.app.infraestructure.storage.service;
 
-import br.com.monitoratec.app.domain.entity.Status;
+import br.com.monitoratec.app.model.entity.Status;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 
@@ -10,6 +10,8 @@ import retrofit2.http.GET;
  * Created by falvojr on 1/9/17.
  */
 public interface GitHubStatusService {
+
+    //TODO (04) Retrofit: GitHub Status API
 
     String BASE_URL = "https://status.github.com/api/";
 

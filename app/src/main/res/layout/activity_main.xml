@@ -57,6 +57,40 @@
         android:layout_height="wrap_content"
         android:text="@string/txt_basic_auth" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10">
+
+
+        <!-- http://stackoverflow.com/a/10282253/3072570 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_weight="4.5"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/txt_or"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_weight="4.5"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/btOAuth"
         style="@style/Widget.AppCompat.Button.Colored"

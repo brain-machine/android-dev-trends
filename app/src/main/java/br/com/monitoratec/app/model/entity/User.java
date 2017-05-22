@@ -1,4 +1,4 @@
-package br.com.monitoratec.app.domain.entity;
+package br.com.monitoratec.app.model.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;

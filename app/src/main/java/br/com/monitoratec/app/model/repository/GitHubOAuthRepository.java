@@ -1,6 +1,6 @@
-package br.com.monitoratec.app.domain.repository;
+package br.com.monitoratec.app.model.repository;
 
-import br.com.monitoratec.app.domain.entity.AccessToken;
+import br.com.monitoratec.app.model.entity.AccessToken;
 import io.reactivex.Observable;
 
 /**

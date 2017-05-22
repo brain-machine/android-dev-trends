@@ -1,4 +1,4 @@
-package br.com.monitoratec.app.dagger;
+package br.com.monitoratec.app.dagger.subcomponent;
 
 import br.com.monitoratec.app.dagger.module.presentation.PresenterModule;
 import br.com.monitoratec.app.dagger.scope.PerActivity;
@@ -13,7 +13,11 @@ import dagger.Subcomponent;
  */
 @PerActivity
 @Subcomponent(modules = {PresenterModule.class})
-public interface UiComponent {
+public interface ActivitySubcomponent {
+
+    //TODO (16) Dagger: Componente responsavel por prover a injecao das Activities
+    //Importante: @PerActivity e @Subcomponent
+
     void inject(AuthActivity activity);
     void inject(ReposActivity reposActivity);
 }

@@ -2,12 +2,10 @@ package br.com.monitoratec.app.infraestructure.storage.manager;
 
 import javax.inject.Inject;
 
-import br.com.monitoratec.app.domain.entity.Status;
-import br.com.monitoratec.app.domain.repository.GitHubStatusRepository;
+import br.com.monitoratec.app.model.entity.Status;
+import br.com.monitoratec.app.model.repository.GitHubStatusRepository;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubStatusService;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Manager for {@link GitHubStatusRepository}.
@@ -25,8 +23,6 @@ public class GitHubStatusManager implements GitHubStatusRepository {
 
     @Override
     public Observable<Status> getLastStatus() {
-        return mGitHubStatusService.getLastStatus()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return mGitHubStatusService.getLastStatus();
     }
 }

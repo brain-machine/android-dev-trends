@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.monitoratec.app">
 
-    <!-- Obrigatório para Intent.ACTION_CALL -->
-    <!-- <uses-permission android:name="android.permission.CALL_PHONE" /> -->
+    <!-- TODO (03) Geral: AndroidManifest.xml e estrutura de pastas (visao geral) -->
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -19,6 +18,8 @@
                 <!-- Main/Launcher Intent Filters -->
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
                 <!-- OAuth Intent Filters -->
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -29,7 +30,11 @@
         <activity
             android:name=".presentation.ui.repos.ReposActivity"
             android:label="@string/title_activity_repos"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".presentation.ui.auth.AuthActivity" />
+        </activity>
     </application>
 
 </manifest>

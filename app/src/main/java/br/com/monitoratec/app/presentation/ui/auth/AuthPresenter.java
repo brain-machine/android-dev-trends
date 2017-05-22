@@ -2,10 +2,12 @@ package br.com.monitoratec.app.presentation.ui.auth;
 
 import javax.inject.Inject;
 
-import br.com.monitoratec.app.domain.entity.Status;
-import br.com.monitoratec.app.domain.repository.GitHubOAuthRepository;
-import br.com.monitoratec.app.domain.repository.GitHubRepository;
-import br.com.monitoratec.app.domain.repository.GitHubStatusRepository;
+import br.com.monitoratec.app.model.entity.Status;
+import br.com.monitoratec.app.model.repository.GitHubOAuthRepository;
+import br.com.monitoratec.app.model.repository.GitHubRepository;
+import br.com.monitoratec.app.model.repository.GitHubStatusRepository;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * GitHub authentication presenter.
@@ -36,6 +38,8 @@ public class AuthPresenter implements AuthContract.Presenter {
     @Override
     public void getStatus() {
         mGitHubStatusRepository.getLastStatus()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(status -> {
                     mView.onGetStatusComplete(status.type);
                 }, error -> {
@@ -46,6 +50,8 @@ public class AuthPresenter implements AuthContract.Presenter {
     @Override
     public void getUser(String authorization) {
         mGitHubRepository.getUser(authorization)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
                     mView.onGetUserComplete(authorization, user);
                 }, error -> {
@@ -58,6 +64,8 @@ public class AuthPresenter implements AuthContract.Presenter {
                                       String clientSecret,
                                       String code) {
         mGitHubOAuthRepository.getAccessToken(clientId, clientSecret, code)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(entity -> {
                     getUser(entity.getAuthCredential());
                 }, error -> {

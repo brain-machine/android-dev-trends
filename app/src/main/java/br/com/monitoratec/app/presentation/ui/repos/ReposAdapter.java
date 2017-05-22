@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import br.com.monitoratec.app.domain.entity.Repo;
+import br.com.monitoratec.app.model.entity.Repo;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -50,6 +50,7 @@ class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> {
 
         ViewHolder(View view) {
             super(view);
+            //TODO (19) Butter Knife: ViewHolder
             ButterKnife.bind(this, view);
         }
     }

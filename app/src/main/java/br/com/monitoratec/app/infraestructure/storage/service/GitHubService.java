@@ -2,8 +2,8 @@ package br.com.monitoratec.app.infraestructure.storage.service;
 
 import java.util.List;
 
-import br.com.monitoratec.app.domain.entity.Repo;
-import br.com.monitoratec.app.domain.entity.User;
+import br.com.monitoratec.app.model.entity.Repo;
+import br.com.monitoratec.app.model.entity.User;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -14,6 +14,8 @@ import retrofit2.http.Header;
  * Created by falvojr on 1/9/17.
  */
 public interface GitHubService {
+
+    //TODO (05) Retrofit: GitHub API
 
     String BASE_URL = "https://api.github.com/";
 

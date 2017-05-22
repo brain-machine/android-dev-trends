@@ -1,4 +1,4 @@
-package br.com.monitoratec.app.domain.entity;
+package br.com.monitoratec.app.model.entity;
 
 /**
  * Access Token entity for GitHub API OAuth.
