@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.monitoratec.app.domain.entity.Repo;
 import br.com.monitoratec.app.domain.entity.User;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Repository interface da API GitHub Status.

@@ -1,7 +1,7 @@
 package br.com.monitoratec.app.domain.repository;
 
 import br.com.monitoratec.app.domain.entity.Status;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Repository interface da API GitHub Status.

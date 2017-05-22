@@ -1,8 +1,8 @@
 package br.com.monitoratec.app.infraestructure.storage.service;
 
 import br.com.monitoratec.app.domain.entity.Status;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
-import rx.Observable;
 
 /**
  * Interface Retrofit da API GitHub Status.

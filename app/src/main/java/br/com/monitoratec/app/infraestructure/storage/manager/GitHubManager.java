@@ -8,9 +8,9 @@ import br.com.monitoratec.app.domain.entity.Repo;
 import br.com.monitoratec.app.domain.entity.User;
 import br.com.monitoratec.app.domain.repository.GitHubRepository;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubService;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Manager for {@link GitHubRepository}.

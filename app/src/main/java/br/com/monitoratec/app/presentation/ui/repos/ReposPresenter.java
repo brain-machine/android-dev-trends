@@ -1,10 +1,9 @@
 package br.com.monitoratec.app.presentation.ui.repos;
 
-import br.com.monitoratec.app.domain.entity.Repo;
 import br.com.monitoratec.app.domain.repository.GitHubRepository;
 
 /**
- * GitHub List {@link Repo}'s presenter.
+ * GitHub List Repo's presenter.
  * <p>
  * Created by falvojr on 1/14/17.
  */

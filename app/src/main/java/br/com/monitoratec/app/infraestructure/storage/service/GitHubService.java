@@ -4,9 +4,9 @@ import java.util.List;
 
 import br.com.monitoratec.app.domain.entity.Repo;
 import br.com.monitoratec.app.domain.entity.User;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import rx.Observable;
 
 /**
  * Interface Retrofit da API GitHub Status.

@@ -1,6 +1,6 @@
 <resources>
     <!-- App name -->
-    <string name="app_name">Android</string>
+    <string name="app_name">Android Coach</string>
 
     <!-- SharedPreference Keys -->
     <string name="sp_file">br.com.monitoratec.app.FILE_PREFERENCES</string>

@@ -5,9 +5,9 @@ import javax.inject.Inject;
 import br.com.monitoratec.app.domain.entity.Status;
 import br.com.monitoratec.app.domain.repository.GitHubStatusRepository;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubStatusService;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Manager for {@link GitHubStatusRepository}.

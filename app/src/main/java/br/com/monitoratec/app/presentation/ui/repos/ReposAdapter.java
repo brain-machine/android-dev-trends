@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
  *
  * Created by falvojr on 1/14/17.
  */
-public class ReposAdapter extends RecyclerView.Adapter {
+class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> {
 
     private final List<Repo> mDataSet;
 
@@ -26,16 +26,16 @@ public class ReposAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReposAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(ReposAdapter.ViewHolder holder, int position) {
         final Repo repo = mDataSet.get(position);
-        ((ViewHolder) holder).mTextView.setText(repo.name);
+        holder.mTextView.setText(repo.name);
     }
 
     @Override

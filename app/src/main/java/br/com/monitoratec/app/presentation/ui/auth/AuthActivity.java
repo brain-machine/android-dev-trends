@@ -39,8 +39,6 @@ import okhttp3.Credentials;
  */
 public class AuthActivity extends BaseActivity implements AuthContract.View {
 
-    private static final String TAG = AuthActivity.class.getSimpleName();
-
     @BindView(R.id.ivGitHub) ImageView mImgGitHub;
     @BindView(R.id.tvGitHub) TextView mTxtGitHub;
     @BindView(R.id.tilUsername) TextInputLayout mLayoutTxtUsername;

@@ -5,9 +5,9 @@ import javax.inject.Inject;
 import br.com.monitoratec.app.domain.entity.AccessToken;
 import br.com.monitoratec.app.domain.repository.GitHubOAuthRepository;
 import br.com.monitoratec.app.infraestructure.storage.service.GitHubOAuthService;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Manager for {@link GitHubOAuthRepository}.

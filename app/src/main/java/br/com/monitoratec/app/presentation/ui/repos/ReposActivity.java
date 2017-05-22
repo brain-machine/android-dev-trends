@@ -61,7 +61,7 @@ public class ReposActivity extends BaseActivity implements ReposContract.View {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         // specify an adapter (see also next example)
-        RecyclerView.Adapter adapter = new ReposAdapter(repos);
+        ReposAdapter adapter = new ReposAdapter(repos);
         mRecyclerView.setAdapter(adapter);
     }
 

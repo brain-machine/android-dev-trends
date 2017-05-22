@@ -1,15 +1,15 @@
 package br.com.monitoratec.app.infraestructure.storage.service;
 
 import br.com.monitoratec.app.domain.entity.AccessToken;
+import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import rx.Observable;
 
 /**
  * Interface Retrofit da API GitHub OAuth.
- *
+ * <p>
  * Created by falvojr on 1/11/17.
  */
 public interface GitHubOAuthService {
