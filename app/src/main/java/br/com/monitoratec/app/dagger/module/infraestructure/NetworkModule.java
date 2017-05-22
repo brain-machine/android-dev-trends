@@ -12,12 +12,12 @@ import br.com.monitoratec.app.infraestructure.storage.service.GitHubStatusServic
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Module for network instances (Retrofit configurations).
- *
+ * <p>
  * Created by falvojr on 1/12/17.
  */
 @Module
@@ -43,15 +43,15 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    RxJavaCallAdapterFactory providesRxJavaCallAdapterFactory() {
-        return RxJavaCallAdapterFactory.create();
+    RxJava2CallAdapterFactory providesRxJavaCallAdapterFactory() {
+        return RxJava2CallAdapterFactory.create();
     }
 
     @Provides
     @Singleton
     @Named(RETROFIT_GITHUB)
     Retrofit providesRetrofitGitHub(GsonConverterFactory gsonFactory,
-                                    RxJavaCallAdapterFactory rxFactory) {
+                                    RxJava2CallAdapterFactory rxFactory) {
         return buildRetrofit(gsonFactory, rxFactory, GitHubService.BASE_URL);
     }
 
@@ -59,7 +59,7 @@ public class NetworkModule {
     @Singleton
     @Named(RETROFIT_GITHUB_STATUS)
     Retrofit providesRetrofitGitHubStatus(GsonConverterFactory gsonFactory,
-                                          RxJavaCallAdapterFactory rxFactory) {
+                                          RxJava2CallAdapterFactory rxFactory) {
         return buildRetrofit(gsonFactory, rxFactory, GitHubStatusService.BASE_URL);
     }
 
@@ -67,12 +67,12 @@ public class NetworkModule {
     @Singleton
     @Named(RETROFIT_GITHUB_OAUTH)
     Retrofit providesRetrofitGitHubOAuth(GsonConverterFactory gsonFactory,
-                                         RxJavaCallAdapterFactory rxFactory) {
+                                         RxJava2CallAdapterFactory rxFactory) {
         return buildRetrofit(gsonFactory, rxFactory, GitHubOAuthService.BASE_URL);
     }
 
     private Retrofit buildRetrofit(GsonConverterFactory converterFactory,
-                                   RxJavaCallAdapterFactory callAdapterFactory,
+                                   RxJava2CallAdapterFactory callAdapterFactory,
                                    String baseUrl) {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)

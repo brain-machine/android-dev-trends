@@ -1,12 +1,8 @@
-plugins {
-    id "me.tatarka.retrolambda" version "3.4.0"
-}
-
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "br.com.monitoratec.app"
         minSdkVersion 15
@@ -14,7 +10,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary true
+        // Java 8 Lambda: http://stackoverflow.com/a/37004259/3072570
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -29,39 +28,49 @@ android {
 }
 
 ext {
-    supportLibVersion = '25.1.0'
-    retrofitLibVersion = '2.1.0'
-    butterknifeLibVersion = '8.4.0'
-    daggerLibVersion = '2.8'
+    supportVersion = '25.3.1'
+    butterKnifeVersion = '8.6.0'
+    daggerVersion = '2.10'
+    rxJavaVersion = '2.1.0'
+    rxAndroidVersion = '2.0.1'
+    rxBindingVersion = '2.0.0'
+    retrofitVersion = '2.3.0'
+
+    espressoVersion = '2.2.2'
+    junitVersion = '4.12'
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile "com.android.support:design:${supportLibVersion}"
-    testCompile 'junit:junit:4.12'
 
-    // Retrofit (by ReactiveX)
-    compile "com.squareup.retrofit2:retrofit:${retrofitLibVersion}"
-    compile "com.squareup.retrofit2:converter-gson:${retrofitLibVersion}"
-    compile "com.squareup.retrofit2:adapter-rxjava:${retrofitLibVersion}"
-
-    // RxJava (by ReactiveX)
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
+    // Support dependencies (native)
+    compile "com.android.support:appcompat-v7:${supportVersion}"
+    compile "com.android.support:design:${supportVersion}"
+    compile "com.android.support:recyclerview-v7:${supportVersion}"
 
     // Butter Knife (by Jake Wharton)
-    compile "com.jakewharton:butterknife:${butterknifeLibVersion}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeLibVersion}"
-
-    // RxBinding (by Jake Wharton)
-    compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
 
     // Dagger 2 (by Google)
-    compile "com.google.dagger:dagger:${daggerLibVersion}"
-    annotationProcessor "com.google.dagger:dagger-compiler:${daggerLibVersion}"
-    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile "com.google.dagger:dagger:${daggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+
+    // RxJava/RxAndroid (by ReactiveX)
+    compile "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
+    compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
+
+    // RxBinding (by Jake Wharton)
+    compile "com.jakewharton.rxbinding2:rxbinding:${rxBindingVersion}"
+
+    // Retrofit (by Square)
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+
+    // Test dependencies (native)
+    androidTestCompile("com.android.support.test.espresso:espresso-core:${espressoVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile "junit:junit:${junitVersion}"
 }
